@@ -37,33 +37,58 @@ export default function StartHuntPage() {
       <Navigation />
 
       <div className="flex justify-between justify-center items-center w-4/5 mx-[10%]">
-        <Dropdown
-          disabled={selectedPlanets.length === 1}
-          options={planetsTemp}
-          addSelectedOption={setSelectedPlanets}
-          allSelectedPlanets={selectedPlanets}
-        />
-        {selectedPlanets.length > 0 && (
+        {selectedPlanets.length === 0 ? (
           <Dropdown
             options={planetsTemp}
-            addSelectedOption={() => console.log(planetsTemp)}
-            allSelectedPlanets={[{ name: "Donlon" }, { name: "Enchai" }]}
+            addSelectedOption={setSelectedPlanets}
+            allSelectedPlanets={selectedPlanets}
           />
+        ) : (
+          <label>{`Selected Planet: ${selectedPlanets[0].name}`}</label>
         )}
-        <Dropdown
-          options={planetsTemp}
-          addSelectedOption={() => console.log(planetsTemp)}
-          allSelectedPlanets={[{ name: "Donlon" }, { name: "Enchai" }]}
-        />
-        <Dropdown
-          options={planetsTemp}
-          addSelectedOption={() => console.log(planetsTemp)}
-          allSelectedPlanets={[{ name: "Donlon" }, { name: "Enchai" }]}
-        />
+        {selectedPlanets.length === 1 ? (
+          <Dropdown
+            options={planetsTemp}
+            addSelectedOption={setSelectedPlanets}
+            allSelectedPlanets={selectedPlanets}
+          />
+        ) : (
+          <>
+            {selectedPlanets.length >= 2 ? (
+              <label>{`Selected Planet: ${selectedPlanets[1].name}`}</label>
+            ) : null}
+          </>
+        )}
+        {selectedPlanets.length === 2 ? (
+          <Dropdown
+            options={planetsTemp}
+            addSelectedOption={setSelectedPlanets}
+            allSelectedPlanets={selectedPlanets}
+          />
+        ) : (
+          <>
+            {selectedPlanets.length >= 3 ? (
+              <label>{`Selected Planet: ${selectedPlanets[2].name}`}</label>
+            ) : null}
+          </>
+        )}
+        {selectedPlanets.length === 3 ? (
+          <Dropdown
+            options={planetsTemp}
+            addSelectedOption={setSelectedPlanets}
+            allSelectedPlanets={selectedPlanets}
+          />
+        ) : (
+          <>
+            {selectedPlanets.length >= 4 ? (
+              <label>{`Selected Planet: ${selectedPlanets[3].name}`}</label>
+            ) : null}
+          </>
+        )}
       </div>
 
       <div className="flex justify-center items-center">
-        <Link href="/Result">
+        <Link href="/result">
           <Button
             variant="default"
             size="lg"
