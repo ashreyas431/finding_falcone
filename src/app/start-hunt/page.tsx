@@ -4,6 +4,7 @@ import Button from "@/components/ui/Button";
 import Dropdown from "@/components/ui/Dropdown";
 import Header from "@/components/ui/Header";
 import Navigation from "@/components/ui/Navigation";
+import RadioGroup from "@/components/ui/Radio";
 import apiHandler from "@/lib/apiHandler";
 import { apiEndpoint } from "@/lib/config";
 import { setToken } from "@/slices/appSlice";
@@ -15,7 +16,6 @@ import { useDispatch, useSelector } from "react-redux";
 export default function StartHuntPage() {
   const dispatch = useDispatch();
   const [selectedPlanets, setSelectedPlanets] = useState<any[]>([]);
-  // const [planetOptions, setPlanetOptions] = useState<any>();
   const planetsTemp: Planets[] = useSelector((state) => {
     return (state as any).planets;
   });
@@ -44,7 +44,12 @@ export default function StartHuntPage() {
             allSelectedPlanets={selectedPlanets}
           />
         ) : (
-          <label>{`Selected Planet: ${selectedPlanets[0].name}`}</label>
+          <>
+            <label>{`Selected Planet: ${selectedPlanets[0].name}`}</label>
+            <div className="block">
+              <RadioGroup options={[]} />
+            </div>
+          </>
         )}
         {selectedPlanets.length === 1 ? (
           <Dropdown
@@ -68,7 +73,9 @@ export default function StartHuntPage() {
         ) : (
           <>
             {selectedPlanets.length >= 3 ? (
-              <label>{`Selected Planet: ${selectedPlanets[2].name}`}</label>
+              <>
+                <label>{`Selected Planet: ${selectedPlanets[2].name}`}</label>
+              </>
             ) : null}
           </>
         )}
