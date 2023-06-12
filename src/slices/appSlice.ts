@@ -11,7 +11,10 @@ export const appSlice = createSlice({
   },
   reducers: {
     setVehicles: (state, action) => {
-      state.vehicles = [...action.payload];
+      state.vehicles = [];
+      action.payload.map((payload:Vehicle) => {
+        state.vehicles.push({...payload,disabled:false});
+      })
     },
     setPlanets: (state, action) => {
       state.planets = [...action.payload];
