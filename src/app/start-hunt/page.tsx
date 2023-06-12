@@ -43,7 +43,6 @@ export default function StartHuntPage() {
     });
     console.log(vehicleOptionsFiltered);
     return vehicleOptionsFiltered;
-    // return vehicleOptionsFiltered;
   };
 
   const {
