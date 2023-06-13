@@ -4,8 +4,8 @@ export const appSlice = createSlice({
   name: "app",
   initialState: {
     vehicles: null as unknown as Vehicle[],
-    planets: null as unknown as Planets[],
-    selectedPlanets: null as unknown as Planets[],
+    planets: null as unknown as Planet[],
+    selectedPlanets: null as unknown as Planet[],
     selectedVehicles: null as unknown as Vehicle[],
     token: ""
   },

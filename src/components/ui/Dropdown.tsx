@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import { VariantProps, cva } from "class-variance-authority";
 import { FC, SelectHTMLAttributes, useEffect, useState } from "react";
+import { filterPlanetOptions } from "@/lib/utils";
 interface DropdownProps
   extends SelectHTMLAttributes<HTMLSelectElement>,
     VariantProps<typeof dropdownVariants> {
@@ -28,19 +29,6 @@ const Dropdown: FC<DropdownProps> = ({
   allSelectedPlanets,
   disabled
 }) => {
-  function removeOptions(options: any[], allSelectedPlanets: any[]) {
-    return options.filter((option) => {
-      return !allSelectedPlanets.some((planet) => {
-        return option.name === planet.name;
-      });
-    });
-  }
-
-  const [tempOptions, setTempOptions] = useState<any[]>([]);
-  useEffect(() => {
-    let obj = [...removeOptions(options, allSelectedPlanets)];
-    setTempOptions(obj);
-  }, [options, allSelectedPlanets]);
 
   return (
     <div className="flex items-center justify-center m-4 p-4">
@@ -48,16 +36,14 @@ const Dropdown: FC<DropdownProps> = ({
         disabled={disabled}
         className={cn(dropdownVariants())}
         onChange={(e) => {
+          console.log(e.target.value);
           e.target.value !== "-1"
-            ? addSelectedOption([
-                ...allSelectedPlanets,
-                { name: e.target.value }
-              ])
+            ? addSelectedOption([...allSelectedPlanets, e.target.value])
             : null;
         }}
       >
         <option value="-1">Select a planet</option>
-        {tempOptions?.map((option: any, idx: number) => {
+        {options?.map((option: Planet, idx: number) => {
           return (
             <option
               key={idx}

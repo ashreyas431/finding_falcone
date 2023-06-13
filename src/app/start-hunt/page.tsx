@@ -7,16 +7,17 @@ import Navigation from "@/components/ui/Navigation";
 import RadioGroup from "@/components/ui/Radio";
 import apiHandler from "@/lib/apiHandler";
 import { apiEndpoint } from "@/lib/config";
+import { filterPlanetOptions, filterVehicleOptions } from "@/lib/utils";
 import { setToken } from "@/slices/appSlice";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function StartHuntPage() {
   const dispatch = useDispatch();
-  const [selectedPlanets, setSelectedPlanets] = useState<any[]>([]);
-  const planetsTemp: Planets[] = useSelector((state) => {
+  const [selectedPlanets, setSelectedPlanets] = useState<string[]>([]);
+  const planetsTemp: Planet[] = useSelector((state) => {
     return (state as any).planets;
   });
   const vehiclesTemp: Vehicle[] = useSelector((state) => {
@@ -24,26 +25,6 @@ export default function StartHuntPage() {
   });
   const [vehicleSelected, setVehicleSelected] = useState(vehiclesTemp[0].name);
   const [vehicleOptions, setVehicleOptions] = useState(vehiclesTemp);
-
-  const filterVehicleOptions = () => {
-    const currentPlanetDistance = planetsTemp.filter((planet) => {
-      return planet.name === selectedPlanets[selectedPlanets.length - 1].name;
-    });
-    console.log(currentPlanetDistance);
-    let vehicleOptionsFiltered: Vehicle[] = [];
-    vehiclesTemp.map((vehiclexx) => {
-      if (vehiclexx.max_distance >= currentPlanetDistance[0].distance) {
-        vehicleOptionsFiltered.push(
-          Object.assign({}, vehiclexx, { disabled: false })
-        );
-      } else
-        vehicleOptionsFiltered.push(
-          Object.assign({}, vehiclexx, { disabled: true })
-        );
-    });
-    console.log(vehicleOptionsFiltered);
-    return vehicleOptionsFiltered;
-  };
 
   const {
     data: token,
@@ -62,19 +43,21 @@ export default function StartHuntPage() {
       <Navigation />
 
       <div className="flex justify-between justify-center items-center w-4/5 mx-[10%]">
-        
-        
         {selectedPlanets.length === 0 ? (
           <Dropdown
-            options={planetsTemp}
+            options={filterPlanetOptions(planetsTemp, selectedPlanets)}
             addSelectedOption={setSelectedPlanets}
             allSelectedPlanets={selectedPlanets}
           />
         ) : (
           <div>
-            <label>{`Selected Planet: ${selectedPlanets[0].name}`}</label>
+            <label>{`Selected Planet: ${selectedPlanets[0]}`}</label>
             <RadioGroup
-              options={filterVehicleOptions()}
+              options={filterVehicleOptions(
+                vehiclesTemp,
+                planetsTemp,
+                selectedPlanets
+              )}
               checked={vehicleSelected}
               setChecked={setVehicleSelected}
             />
@@ -82,7 +65,7 @@ export default function StartHuntPage() {
         )}
         {selectedPlanets.length === 1 ? (
           <Dropdown
-            options={planetsTemp}
+            options={filterPlanetOptions(planetsTemp, selectedPlanets)}
             addSelectedOption={setSelectedPlanets}
             allSelectedPlanets={selectedPlanets}
           />
@@ -90,9 +73,13 @@ export default function StartHuntPage() {
           <>
             {selectedPlanets.length >= 2 ? (
               <div>
-                <label>{`Selected Planet: ${selectedPlanets[1].name}`}</label>
+                <label>{`Selected Planet: ${selectedPlanets[1]}`}</label>
                 <RadioGroup
-                  options={filterVehicleOptions()}
+                  options={filterVehicleOptions(
+                    vehiclesTemp,
+                    planetsTemp,
+                    selectedPlanets
+                  )}
                   checked={vehicleSelected}
                   setChecked={setVehicleSelected}
                 />
@@ -102,7 +89,7 @@ export default function StartHuntPage() {
         )}
         {selectedPlanets.length === 2 ? (
           <Dropdown
-            options={planetsTemp}
+            options={filterPlanetOptions(planetsTemp, selectedPlanets)}
             addSelectedOption={setSelectedPlanets}
             allSelectedPlanets={selectedPlanets}
           />
@@ -110,9 +97,13 @@ export default function StartHuntPage() {
           <>
             {selectedPlanets.length >= 3 ? (
               <div>
-                <label>{`Selected Planet: ${selectedPlanets[2].name}`}</label>
+                <label>{`Selected Planet: ${selectedPlanets[2]}`}</label>
                 <RadioGroup
-                  options={filterVehicleOptions()}
+                  options={filterVehicleOptions(
+                    vehiclesTemp,
+                    planetsTemp,
+                    selectedPlanets
+                  )}
                   checked={vehicleSelected}
                   setChecked={setVehicleSelected}
                 />
@@ -122,7 +113,7 @@ export default function StartHuntPage() {
         )}
         {selectedPlanets.length === 3 ? (
           <Dropdown
-            options={planetsTemp}
+            options={filterPlanetOptions(planetsTemp, selectedPlanets)}
             addSelectedOption={setSelectedPlanets}
             allSelectedPlanets={selectedPlanets}
           />
@@ -130,9 +121,13 @@ export default function StartHuntPage() {
           <>
             {selectedPlanets.length >= 4 ? (
               <div>
-                <label>{`Selected Planet: ${selectedPlanets[3].name}`}</label>
+                <label>{`Selected Planet: ${selectedPlanets[3]}`}</label>
                 <RadioGroup
-                  options={filterVehicleOptions()}
+                  options={filterVehicleOptions(
+                    vehiclesTemp,
+                    planetsTemp,
+                    selectedPlanets
+                  )}
                   checked={vehicleSelected}
                   setChecked={setVehicleSelected}
                 />
