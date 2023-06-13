@@ -7,11 +7,15 @@ import Navigation from "@/components/ui/Navigation";
 import RadioGroup from "@/components/ui/Radio";
 import apiHandler from "@/lib/apiHandler";
 import { apiEndpoint } from "@/lib/config";
-import { filterPlanetOptions, filterVehicleOptions } from "@/lib/utils";
+import {
+  filterPlanetOptions,
+  filterVehicleOptions,
+  firstAvailableVehicle
+} from "@/lib/utils";
 import { setToken } from "@/slices/appSlice";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function StartHuntPage() {
@@ -23,8 +27,8 @@ export default function StartHuntPage() {
   const vehiclesTemp: Vehicle[] = useSelector((state) => {
     return (state as any).vehicles;
   });
-  const [vehicleSelected, setVehicleSelected] = useState(vehiclesTemp[0].name);
-  const [vehicleOptions, setVehicleOptions] = useState(vehiclesTemp);
+  const [vehicleSelected, setVehicleSelected] = useState<Vehicle>();
+  const [vehicleOptions, setVehicleOptions] = useState<Vehicle[]>([]);
 
   const {
     data: token,
@@ -34,6 +38,16 @@ export default function StartHuntPage() {
     queryKey: ["token"],
     queryFn: () => apiHandler(apiEndpoint.token, "post")
   });
+
+  useEffect(() => {
+    setVehicleOptions(
+      filterVehicleOptions(vehiclesTemp, planetsTemp, selectedPlanets)
+    );
+  }, [selectedPlanets]);
+
+  useEffect(() => {
+    setVehicleSelected(firstAvailableVehicle(vehicleOptions));
+  }, [vehicleOptions]);
 
   !tokenLoading && !tokenError ? dispatch(setToken(token.data.token)) : null;
 
@@ -78,7 +92,9 @@ export default function StartHuntPage() {
                   options={filterVehicleOptions(
                     vehiclesTemp,
                     planetsTemp,
-                    selectedPlanets
+                    selectedPlanets,
+                    vehicleSelected,
+                    setVehicleSelected
                   )}
                   checked={vehicleSelected}
                   setChecked={setVehicleSelected}
@@ -102,7 +118,9 @@ export default function StartHuntPage() {
                   options={filterVehicleOptions(
                     vehiclesTemp,
                     planetsTemp,
-                    selectedPlanets
+                    selectedPlanets,
+                    vehicleSelected,
+                    setVehicleSelected
                   )}
                   checked={vehicleSelected}
                   setChecked={setVehicleSelected}
@@ -126,7 +144,9 @@ export default function StartHuntPage() {
                   options={filterVehicleOptions(
                     vehiclesTemp,
                     planetsTemp,
-                    selectedPlanets
+                    selectedPlanets,
+                    vehicleSelected,
+                    setVehicleSelected
                   )}
                   checked={vehicleSelected}
                   setChecked={setVehicleSelected}
