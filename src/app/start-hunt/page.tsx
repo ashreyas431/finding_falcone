@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import Button from "@/components/ui/Button";
@@ -40,9 +41,10 @@ export default function StartHuntPage() {
   });
 
   useEffect(() => {
-    setVehicleOptions(
-      filterVehicleOptions(vehiclesTemp, planetsTemp, selectedPlanets)
-    );
+    if (selectedPlanets.length > 0)
+      setVehicleOptions(
+        filterVehicleOptions(vehiclesTemp, planetsTemp, selectedPlanets)
+      );
   }, [selectedPlanets]);
 
   useEffect(() => {
@@ -92,9 +94,7 @@ export default function StartHuntPage() {
                   options={filterVehicleOptions(
                     vehiclesTemp,
                     planetsTemp,
-                    selectedPlanets,
-                    vehicleSelected,
-                    setVehicleSelected
+                    selectedPlanets
                   )}
                   checked={vehicleSelected}
                   setChecked={setVehicleSelected}
@@ -118,9 +118,7 @@ export default function StartHuntPage() {
                   options={filterVehicleOptions(
                     vehiclesTemp,
                     planetsTemp,
-                    selectedPlanets,
-                    vehicleSelected,
-                    setVehicleSelected
+                    selectedPlanets
                   )}
                   checked={vehicleSelected}
                   setChecked={setVehicleSelected}
@@ -144,9 +142,7 @@ export default function StartHuntPage() {
                   options={filterVehicleOptions(
                     vehiclesTemp,
                     planetsTemp,
-                    selectedPlanets,
-                    vehicleSelected,
-                    setVehicleSelected
+                    selectedPlanets
                   )}
                   checked={vehicleSelected}
                   setChecked={setVehicleSelected}
